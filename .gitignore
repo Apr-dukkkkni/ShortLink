@@ -34,3 +34,22 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# 压缩包
+*.zip
+*.rar
+*.7z
+
+# nacos运行数据、日志
+nacos/data/
+nacos/logs/
+nacos/bin/*.log
+
+# maven编译产物
+target/
+!**/src/main/**
+!**/src/test/**
+
+# node前端产物
+console-vue/node_modules/
+console-vue/dist/
