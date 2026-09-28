@@ -14,7 +14,7 @@ public class Segment {
         //AtomicLong底层用 CAS，不用 synchronized 锁，就能保证多线程环境下原子自增，高性能。
         this.max = max;
     }
-    public long nextId(){
+    public long tryNextId(){
         long id = current.getAndIncrement();
         if(id > max){
             throw new IllegalStateException("号段已耗尽");
@@ -22,8 +22,17 @@ public class Segment {
         return id;
     }
 
-    public boolean isExhausten(){
-        return current.get() > max;
+    public boolean hasRemaining(){
+        return current.get() <= max;
     }
+
+    public long getCurrent(){
+        return current.get();
+    }
+
+    public long getMax(){
+        return max;
+    }
+
 
 }

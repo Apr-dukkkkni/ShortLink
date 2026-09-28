@@ -1,20 +1,46 @@
-package com.nageoffer.shortlink.project.dao;
+package com.nageoffer.shortlink.project.dao.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.nageoffer.shortlink.project.dao.entity.ShortLinkSequenceDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
-public interface ShortLinkSequenceMapper {
+public interface ShortLinkSequenceMapper
+        extends BaseMapper<ShortLinkSequenceDO> {
 
     /**
-     * 原子更新max_id：max_id = max_id + step，返回影响行数
-     * 利用mysql行锁，保证并发下不会拿到重复号段
+     * 查询当前号段配置，并对这一行加排他锁。
+     *
+     * 必须放在事务中调用。
      */
-    int updateMaxIdByBizTag(@Param("bizTag") String bizTag, @Param("step") int step);
+    @Select("""
+            SELECT
+                biz_tag,
+                max_id,
+                step,
+                update_time
+            FROM short_link_sequence
+            WHERE biz_tag = #{bizTag}
+            FOR UPDATE
+            """)
+    ShortLinkSequenceDO selectByBizTagForUpdate(
+            @Param("bizTag") String bizTag
+    );
 
     /**
-     * 查询当前业务号段记录
+     * 更新最大 ID
      */
-    ShortLinkSequenceDO selectByBizTag(@Param("bizTag") String bizTag);
+    @Update("""
+            UPDATE short_link_sequence
+            SET max_id = #{newMaxId},
+                update_time = NOW()
+            WHERE biz_tag = #{bizTag}
+            """)
+    int updateMaxId(
+            @Param("bizTag") String bizTag,
+            @Param("newMaxId") Long newMaxId
+    );
 }

@@ -29,6 +29,7 @@ import com.nageoffer.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
 import com.nageoffer.shortlink.project.dto.resp.*;
 import com.nageoffer.shortlink.project.mq.producer.ShortLinkStatsSaveProducer;
 import com.nageoffer.shortlink.project.service.ShortLinkService;
+import com.nageoffer.shortlink.project.toolkit.Base62Util;
 import com.nageoffer.shortlink.project.toolkit.HashUtil;
 import com.nageoffer.shortlink.project.toolkit.LinkUtil;
 import jakarta.servlet.ServletRequest;
@@ -76,6 +77,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper,ShortLinkD
     private final StringRedisTemplate stringRedisTemplate;
     private final RedissonClient redissonClient;
     private final ShortLinkStatsSaveProducer shortLinkStatsSaveProducer;
+    private final com.nageoffer.shortlink.project.service.id.SegmentIdGenerator segmentIdGenerator;
 
 
     @Value("${short-link.domain.default}")
@@ -89,7 +91,8 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper,ShortLinkD
     public ShortLinkCreateRespDTO createShortLink(ShortLinkCreateReqDTO requestParam){
         verificationWhitelist(requestParam.getOriginUrl());
 
-        String shortUrl = generateSuffix(requestParam);
+        //String shortUrl = generateSuffix(requestParam);
+        String shortUrl = generateSuffixBySegment();
         String  fullShortUrl = StrBuilder.create(createShortLinkDefaultDomain).append("/").append(shortUrl).toString();
 
         ShortLinkDO shortLinkDO = buildShortLinkDO(requestParam, shortUrl, fullShortUrl);
@@ -485,6 +488,13 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper,ShortLinkD
             customGenerateCount++;
         }
         return shortUri;
+    }
+
+    private String generateSuffixBySegment() {
+
+        long id = segmentIdGenerator.nextId();
+
+        return Base62Util.encode(id);
     }
 
     private String generateShortUrl(String originUrl){
