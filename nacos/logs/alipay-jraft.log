@@ -1,0 +1,82 @@
+2026-08-29 18:36:50,073 INFO SPI service [com.alipay.sofa.jraft.JRaftServiceFactory - com.alipay.sofa.jraft.core.DefaultJRaftServiceFactory] loading.
+
+2026-08-29 18:36:50,128 INFO SPI service [com.alipay.sofa.jraft.rpc.RaftRpcFactory - com.alipay.sofa.jraft.rpc.impl.GrpcRaftRpcFactory] loading.
+
+2026-08-29 18:36:50,226 INFO SPI service [com.alipay.sofa.jraft.util.timer.RaftTimerFactory - com.alipay.sofa.jraft.util.timer.DefaultRaftTimerFactory] loading.
+
+2026-08-29 18:36:50,231 INFO The number of active nodes increment to 1.
+
+2026-08-29 18:36:50,394 INFO Starts FSMCaller successfully.
+
+2026-08-29 18:36:50,400 WARN No data for snapshot reader C:\Users\Administrator\Desktop\workstudy\shortlink-main\nacos\data\protocol\raft\naming_persistent_service_v2\snapshot.
+
+2026-08-29 18:36:50,407 INFO Node <naming_persistent_service_v2/192.168.56.1:7848> init, term=0, lastLogId=LogId [index=0, term=0], conf=192.168.56.1:7848, oldConf=.
+
+2026-08-29 18:36:50,408 INFO Node <naming_persistent_service_v2/192.168.56.1:7848> start vote and grant vote self, term=0.
+
+2026-08-29 18:36:50,420 WARN Unable to fsync directory C:\Users\Administrator\Desktop\workstudy\shortlink-main\nacos\data\protocol\raft\naming_persistent_service_v2\meta-data on windows.
+
+2026-08-29 18:36:50,423 INFO Save raft meta, path=C:\Users\Administrator\Desktop\workstudy\shortlink-main\nacos\data\protocol\raft\naming_persistent_service_v2\meta-data, term=1, votedFor=192.168.56.1:7848, cost time=11 ms
+
+2026-08-29 18:36:50,424 INFO Node <naming_persistent_service_v2/192.168.56.1:7848> become leader of group, term=1, conf=192.168.56.1:7848, oldConf=.
+
+2026-08-29 18:36:50,426 INFO -Djraft.recyclers.maxCapacityPerThread: 4096.
+
+2026-08-29 18:36:50,428 WARN RPC server is not started in RaftGroupService.
+
+2026-08-29 18:36:50,428 INFO Start the RaftGroupService successfully.
+
+2026-08-29 18:36:50,436 INFO onLeaderStart: term=1.
+
+2026-08-29 18:36:50,440 INFO The number of active nodes increment to 2.
+
+2026-08-29 18:36:50,468 INFO Starts FSMCaller successfully.
+
+2026-08-29 18:36:50,468 WARN No data for snapshot reader C:\Users\Administrator\Desktop\workstudy\shortlink-main\nacos\data\protocol\raft\naming_instance_metadata\snapshot.
+
+2026-08-29 18:36:50,469 INFO Node <naming_instance_metadata/192.168.56.1:7848> init, term=0, lastLogId=LogId [index=0, term=0], conf=192.168.56.1:7848, oldConf=.
+
+2026-08-29 18:36:50,469 INFO Node <naming_instance_metadata/192.168.56.1:7848> start vote and grant vote self, term=0.
+
+2026-08-29 18:36:50,472 WARN Unable to fsync directory C:\Users\Administrator\Desktop\workstudy\shortlink-main\nacos\data\protocol\raft\naming_instance_metadata\meta-data on windows.
+
+2026-08-29 18:36:50,472 INFO Save raft meta, path=C:\Users\Administrator\Desktop\workstudy\shortlink-main\nacos\data\protocol\raft\naming_instance_metadata\meta-data, term=1, votedFor=192.168.56.1:7848, cost time=3 ms
+
+2026-08-29 18:36:50,472 INFO Node <naming_instance_metadata/192.168.56.1:7848> become leader of group, term=1, conf=192.168.56.1:7848, oldConf=.
+
+2026-08-29 18:36:50,472 WARN RPC server is not started in RaftGroupService.
+
+2026-08-29 18:36:50,472 INFO Start the RaftGroupService successfully.
+
+2026-08-29 18:36:50,473 INFO onLeaderStart: term=1.
+
+2026-08-29 18:36:50,477 INFO The number of active nodes increment to 3.
+
+2026-08-29 18:36:50,499 INFO Creating new channel to: 192.168.56.1:7848.
+
+2026-08-29 18:36:50,502 INFO Starts FSMCaller successfully.
+
+2026-08-29 18:36:50,503 WARN No data for snapshot reader C:\Users\Administrator\Desktop\workstudy\shortlink-main\nacos\data\protocol\raft\naming_service_metadata\snapshot.
+
+2026-08-29 18:36:50,503 INFO Node <naming_service_metadata/192.168.56.1:7848> init, term=0, lastLogId=LogId [index=0, term=0], conf=192.168.56.1:7848, oldConf=.
+
+2026-08-29 18:36:50,504 INFO Node <naming_service_metadata/192.168.56.1:7848> start vote and grant vote self, term=0.
+
+2026-08-29 18:36:50,506 WARN Unable to fsync directory C:\Users\Administrator\Desktop\workstudy\shortlink-main\nacos\data\protocol\raft\naming_service_metadata\meta-data on windows.
+
+2026-08-29 18:36:50,506 INFO Save raft meta, path=C:\Users\Administrator\Desktop\workstudy\shortlink-main\nacos\data\protocol\raft\naming_service_metadata\meta-data, term=1, votedFor=192.168.56.1:7848, cost time=2 ms
+
+2026-08-29 18:36:50,506 INFO Node <naming_service_metadata/192.168.56.1:7848> become leader of group, term=1, conf=192.168.56.1:7848, oldConf=.
+
+2026-08-29 18:36:50,506 WARN RPC server is not started in RaftGroupService.
+
+2026-08-29 18:36:50,506 INFO Start the RaftGroupService successfully.
+
+2026-08-29 18:36:50,507 INFO onLeaderStart: term=1.
+
+2026-08-29 18:36:50,540 INFO The channel 192.168.56.1:7848 is in state: CONNECTING.
+
+2026-08-29 18:36:50,669 INFO The channel 192.168.56.1:7848 is in state: READY.
+
+2026-08-29 18:36:50,670 INFO The channel 192.168.56.1:7848 has successfully established.
+

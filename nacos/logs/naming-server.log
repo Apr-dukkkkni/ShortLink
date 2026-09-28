@@ -1,0 +1,20 @@
+2026-08-29 18:36:50,000 INFO [SelectorManager] Load SelectorContextBuilder(class com.alibaba.nacos.naming.selector.context.CmdbSelectorContextBuilder) contextType(CMDB) successfully.
+
+2026-08-29 18:36:50,000 INFO [SelectorManager] Load SelectorContextBuilder(class com.alibaba.nacos.naming.selector.context.NoneSelectorContextBuilder) contextType(NONE) successfully.
+
+2026-08-29 18:36:50,000 INFO [SelectorManager] Load Selector(class com.alibaba.nacos.naming.selector.LabelSelector) type(label) contextType(CMDB) successfully.
+
+2026-08-29 18:36:50,000 INFO [SelectorManager] Load Selector(class com.alibaba.nacos.naming.selector.NoneSelector) type(none) contextType(NONE) successfully.
+
+2026-08-29 18:36:50,569 INFO Load instance extension handler []
+
+2026-08-29 18:37:28,620 INFO Client connection 1787999848515_127.0.0.1_57179 connect
+
+2026-08-29 18:37:28,730 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='short-link-gateway', ephemeral=true, revision=0}, 1787999848515_127.0.0.1_57179
+
+2026-08-29 18:43:06,394 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='short-link-gateway', ephemeral=true, revision=1}, 1787999848515_127.0.0.1_57179
+
+2026-08-29 18:43:06,405 INFO Client connection 1787999848515_127.0.0.1_57179 disconnect, remove instances and subscribers
+
+2026-08-29 18:44:20,515 WARN namespace : public, [DEFAULT_GROUP@@short-link-gateway] services are automatically cleaned
+

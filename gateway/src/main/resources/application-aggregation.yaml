@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: short-link-admin-aggregation
+          uri: lb://short-link-aggregation/api/short-link/admin/**
+          predicates:
+            - Path=/api/short-link/admin/**
+          filters:
+            - name: TokenValidate
+              args:
+                whitePathList:
+                  - /api/short-link/admin/v1/user/login
+                  - /api/short-link/admin/v1/user/has-username
+            - name: RequestRateLimiter      # ←新增限流过滤器
+              args:
+                redis-rate-limiter.replenish-rate: 10   #每秒放10个请求
+                redis-rate-limiter.burst-capacity: 20   #令牌桶最大20，允许突发
+            - name: CircuitBreaker        # 🔴熔断过滤器
+              args:
+                name: shortLinkCircuit
+                fallbackUri: forward:/fallback
+
+        - id: short-link-project-aggregation
+          uri: lb://short-link-aggregation/api/short-link/**
+          predicates:
+            - Path=/api/short-link/**
+          filters:
+            - name: TokenValidate
