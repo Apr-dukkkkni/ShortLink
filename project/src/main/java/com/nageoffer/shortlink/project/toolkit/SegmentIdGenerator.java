@@ -1,4 +1,4 @@
-package com.nageoffer.shortlink.project.service.id;
+package com.nageoffer.shortlink.project.toolkit;
 
 import com.nageoffer.shortlink.project.service.SegmentAllocatorService;
 import com.nageoffer.shortlink.project.toolkit.Segment;
@@ -11,7 +11,6 @@ public class SegmentIdGenerator {
 
     /**
      * 当前号段。
-     *
      * volatile：
      * 保证不同线程能够看到最新替换的 Segment。
      */

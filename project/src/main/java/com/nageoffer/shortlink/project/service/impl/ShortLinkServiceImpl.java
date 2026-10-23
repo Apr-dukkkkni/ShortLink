@@ -77,7 +77,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper,ShortLinkD
     private final StringRedisTemplate stringRedisTemplate;
     private final RedissonClient redissonClient;
     private final ShortLinkStatsSaveProducer shortLinkStatsSaveProducer;
-    private final com.nageoffer.shortlink.project.service.id.SegmentIdGenerator segmentIdGenerator;
+    private final com.nageoffer.shortlink.project.toolkit.SegmentIdGenerator segmentIdGenerator;
 
 
     @Value("${short-link.domain.default}")
@@ -574,7 +574,8 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper,ShortLinkD
                 .totalUip(0)
                 .delTime(0L)
                 .fullShortUrl(fullShortUrl)
-                .favicon(getFavicon(requestParam.getOriginUrl()))
+                .favicon(null) //压测
+                //.favicon(getFavicon(requestParam.getOriginUrl()))
                 .build();
     }
 

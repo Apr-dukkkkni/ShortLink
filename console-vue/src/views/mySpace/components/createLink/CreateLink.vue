@@ -195,24 +195,38 @@ watch(
   () => props.groupInfo,
   (nV) => {
     groupInfo.value = nV
-    // console.log('默认的gid', props.defaultGid)
+
     if (props.defaultGid) {
+      // 存在默认分组ID，优先使用
       formData.gid = props.defaultGid
-    } else {
+    } else if (Array.isArray(nV) && nV.length > 0) {
+      // 分组列表不为空，使用第一个分组
       formData.gid = nV[0].gid
+    } else {
+      // 没有可用分组
+      formData.gid = ''
     }
   },
   {
     immediate: true
   }
 )
+
 watch(
   () => props.defaultGid,
   (nV) => {
-    if (props.defaultGid) {
-      formData.gid = props.defaultGid
+    if (nV) {
+      // 有默认分组ID，直接使用
+      formData.gid = nV
+    } else if (
+      Array.isArray(props.groupInfo) &&
+      props.groupInfo.length > 0
+    ) {
+      // 没有默认分组ID，使用第一个分组
+      formData.gid = props.groupInfo[0].gid
     } else {
-      formData.gid = nV[0].gid
+      // 没有任何分组
+      formData.gid = ''
     }
   },
   {
