@@ -1,0 +1,21 @@
+--- a/project/src/main/java/com/nageoffer/shortlink/project/dto/req/ShortLinkCreateReqDTO.java
++++ b/project/src/main/java/com/nageoffer/shortlink/project/dto/req/ShortLinkCreateReqDTO.java
+@@ -56,6 +56,7 @@
+     /**
+      * 分组标识
+      */
++    @NotBlank(message = "分组标识不能为空")
+     private String gid;
+ 
+     /**
+--- a/project/src/main/java/com/nageoffer/shortlink/project/service/impl/ShortLinkServiceImpl.java
++++ b/project/src/main/java/com/nageoffer/shortlink/project/service/impl/ShortLinkServiceImpl.java
+@@ -606,7 +606,7 @@
+         try {
+             baseMapper.insert(shortLinkDO);
+             shortLinkGotoMapper.insert(shortLinkGotoDO);
+-        }catch (RuntimeException ex){
++        }catch (DuplicateKeyException ex){
+             throw new ServiceException(String.format("短链接：%s 生成重复，请重试", shortLinkDO.getFullShortUrl()));
+         }
+ 

@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.nageoffer.shortlink.project.service.impl;
 
 
@@ -581,21 +598,44 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper,ShortLinkD
 
 
 
-    private void verificationWhitelist(String original){
-        if(StrUtil.isBlank(original)){
-            throw new RuntimeException("输入的链接有误");
+
+    private void verificationWhitelist(String originUrl) {
+
+        // 1. 原始链接不能为空
+        if (StrUtil.isBlank(originUrl)) {
+            throw new ClientException("原始链接不能为空");
         }
+
+        // 2. 白名单关闭，直接放行
         Boolean enable = gotoDomainWhiteListConfiguration.getEnable();
-        if(enable == null || !enable ){
-            return ;
+
+        if (!Boolean.TRUE.equals(enable)) {
+            return;
         }
-        String domain = LinkUtil.extractDomain(original);
-        List<String> whiteList = gotoDomainWhiteListConfiguration.getDetails();
-        if(StrUtil.isBlank(domain) && whiteList.contains(domain)){
-            String allowName = gotoDomainWhiteListConfiguration.getNames();
-            throw new RuntimeException("只可以跳转如下名单：" + allowName);
+
+        // 3. 提取目标域名
+        String domain = LinkUtil.extractDomain(originUrl);
+
+        if (StrUtil.isBlank(domain)) {
+            throw new ClientException("目标域名不能为空");
+        }
+
+        // 4. 获取白名单
+        List<String> whiteList =
+                gotoDomainWhiteListConfiguration.getDetails();
+
+        // 5. 不在白名单中的域名才拒绝
+        if (whiteList == null || !whiteList.contains(domain)) {
+
+            String allowNames =
+                    gotoDomainWhiteListConfiguration.getNames();
+
+            throw new ClientException(
+                    "域名不在白名单中，允许的域名：" + allowNames
+            );
         }
     }
+
 
     @Transactional(rollbackFor = Exception.class)
     private void saveSingleShortLink(ShortLinkDO shortLinkDO, ShortLinkCreateReqDTO requestParam){
@@ -606,7 +646,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper,ShortLinkD
         try {
             baseMapper.insert(shortLinkDO);
             shortLinkGotoMapper.insert(shortLinkGotoDO);
-        }catch (RuntimeException ex){
+        }catch (DuplicateKeyException ex){
             throw new ServiceException(String.format("短链接：%s 生成重复，请重试", shortLinkDO.getFullShortUrl()));
         }
 

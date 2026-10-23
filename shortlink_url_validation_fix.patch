@@ -1,0 +1,91 @@
+--- a/project/pom.xml
++++ b/project/pom.xml
+@@ -16,6 +16,10 @@
+         <dependency>
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-starter-web</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-validation</artifactId>
+         </dependency>
+ 
+ 
+--- a/project/src/main/java/com/nageoffer/shortlink/project/dto/req/ShortLinkCreateReqDTO.java
++++ b/project/src/main/java/com/nageoffer/shortlink/project/dto/req/ShortLinkCreateReqDTO.java
+@@ -22,6 +22,10 @@
+ import lombok.Builder;
+ import lombok.Data;
+ import lombok.NoArgsConstructor;
++import jakarta.validation.constraints.NotBlank;
++import jakarta.validation.constraints.Pattern;
++import jakarta.validation.constraints.Size;
++import org.hibernate.validator.constraints.URL;
+ 
+ import java.util.Date;
+ 
+@@ -43,6 +47,10 @@
+     /**
+      * 原始链接
+      */
++    @NotBlank(message = "原始链接不能为空")
++    @Size(max = 1024, message = "原始链接长度不能超过1024字符")
++    @URL(message = "原始链接格式不正确")
++    @Pattern(regexp = "(?i)^https?://.*$", message = "原始链接只支持http或https协议")
+     private String originUrl;
+ 
+     /**
+--- a/project/src/main/java/com/nageoffer/shortlink/project/controller/ShortLinkController.java
++++ b/project/src/main/java/com/nageoffer/shortlink/project/controller/ShortLinkController.java
+@@ -33,6 +33,7 @@
+ import com.nageoffer.shortlink.project.service.ShortLinkService;
+ import jakarta.servlet.ServletRequest;
+ import jakarta.servlet.ServletResponse;
++import jakarta.validation.Valid;
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.web.bind.annotation.GetMapping;
+ import org.springframework.web.bind.annotation.PathVariable;
+@@ -71,7 +72,7 @@
+             blockHandler = "createShortLinkBlockHandlerMethod",
+             blockHandlerClass = CustomBlockHandler.class
+     )
+-    public Result<ShortLinkCreateRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
++    public Result<ShortLinkCreateRespDTO> createShortLink(@Valid @RequestBody ShortLinkCreateReqDTO requestParam) {
+         return Results.success(shortLinkService.createShortLink(requestParam));
+     }
+ 
+@@ -79,7 +80,7 @@
+      * 通过分布式锁创建短链接
+      */
+     @PostMapping("/api/short-link/v1/create/by-lock")
+-    public Result<ShortLinkCreateRespDTO> createShortLinkByLock(@RequestBody ShortLinkCreateReqDTO requestParam) {
++    public Result<ShortLinkCreateRespDTO> createShortLinkByLock(@Valid @RequestBody ShortLinkCreateReqDTO requestParam) {
+         return Results.success(shortLinkService.createShortLinkByLock(requestParam));
+     }
+ 
+--- a/project/src/main/java/com/nageoffer/shortlink/project/common/web/GlobalExceptionHandler.java
++++ b/project/src/main/java/com/nageoffer/shortlink/project/common/web/GlobalExceptionHandler.java
+@@ -26,6 +26,7 @@
+ import jakarta.servlet.http.HttpServletRequest;
+ import lombok.SneakyThrows;
+ import lombok.extern.slf4j.Slf4j;
++import org.springframework.http.HttpStatus;
+ import org.springframework.stereotype.Component;
+ import org.springframework.util.StringUtils;
+ import org.springframework.validation.BindingResult;
+@@ -33,6 +34,7 @@
+ import org.springframework.web.bind.MethodArgumentNotValidException;
+ import org.springframework.web.bind.annotation.ExceptionHandler;
+ import org.springframework.web.bind.annotation.RestControllerAdvice;
++import org.springframework.web.bind.annotation.ResponseStatus;
+ 
+ import java.util.Optional;
+ 
+@@ -50,6 +52,7 @@
+      */
+     @SneakyThrows
+     @ExceptionHandler(value = MethodArgumentNotValidException.class)
++    @ResponseStatus(HttpStatus.BAD_REQUEST)
+     public Result validExceptionHandler(HttpServletRequest request, MethodArgumentNotValidException ex) {
+         BindingResult bindingResult = ex.getBindingResult();
+         FieldError firstFieldError = CollectionUtil.getFirst(bindingResult.getFieldErrors());

@@ -33,6 +33,7 @@ import com.nageoffer.shortlink.project.handler.CustomBlockHandler;
 import com.nageoffer.shortlink.project.service.ShortLinkService;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,7 +72,7 @@ public class ShortLinkController {
             blockHandler = "createShortLinkBlockHandlerMethod",
             blockHandlerClass = CustomBlockHandler.class
     )
-    public Result<ShortLinkCreateRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
+    public Result<ShortLinkCreateRespDTO> createShortLink(@Valid @RequestBody ShortLinkCreateReqDTO requestParam) {
         return Results.success(shortLinkService.createShortLink(requestParam));
     }
 
@@ -79,7 +80,7 @@ public class ShortLinkController {
      * 通过分布式锁创建短链接
      */
     @PostMapping("/api/short-link/v1/create/by-lock")
-    public Result<ShortLinkCreateRespDTO> createShortLinkByLock(@RequestBody ShortLinkCreateReqDTO requestParam) {
+    public Result<ShortLinkCreateRespDTO> createShortLinkByLock(@Valid @RequestBody ShortLinkCreateReqDTO requestParam) {
         return Results.success(shortLinkService.createShortLinkByLock(requestParam));
     }
 
