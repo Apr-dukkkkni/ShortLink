@@ -1,0 +1,14 @@
+# 继承项目原有 application.yaml 的真实 ShardingSphere MySQL 与 Redis 配置。
+# 此文件不配置第二个数据库，也不覆盖连接信息。
+spring:
+  cloud:
+    discovery:
+      enabled: false
+    nacos:
+      discovery:
+        enabled: false
+        register-enabled: false
+short-link:
+  goto-domain:
+    white-list:
+      enable: false
